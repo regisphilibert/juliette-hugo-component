@@ -20,8 +20,8 @@ Adding another output format is therefor limited to creating a few new templates
 
 ## Getting Started
 
-1. `git submodule add https://github.com/regisphilibert/juliette-api-component`
-2. Add `juliette-api-component` or whatever you may have renamed Juliette's directory
+1. `git submodule add https://github.com/regisphilibert/juliette-api-component themes/juliette-api-component`
+2. Add `juliette-api-component` as your theme or to your list of themes.
   ```
   theme:
     - that-theme-i-have
@@ -38,11 +38,11 @@ Adding another output format is therefor limited to creating a few new templates
       - JSON
   ```
 
-Go get that endpoint at `your-page/index.json`
+You're done! Go get that endpoint at `my-perfect-website.com/index.json`
 
 ### Options
 
-Juliette options live under your `.Site.Params` under the `juliette` object as such:
+Juliette options live in your `.Site.Params` under the `juliette` object as such:
 
 ```
 params:
