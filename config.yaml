@@ -1,0 +1,30 @@
+params:
+  apiUrl: "api"
+
+mediaTypes:
+  "text/netlify":
+    suffixes: 
+      - ""
+    delimiter: ""
+  "text/hta":
+    suffixes: 
+      - "htaccess"
+    delimiter: "."
+  "application/yaml":
+    suffixes:
+      - "yaml"
+    delimiter: "."
+    isPlainText: true
+
+outputFormats:
+  redirect_netlify:
+    mediatype: "text/netlify"
+    baseName: "_redirects"
+  redirect_apache:
+    mediatype: "text/hta"
+    baseName: ""
+  yaml:
+    mediaType: "application/yaml"
+    baseName: "index"
+  xml:
+    mediaType: "application/xml"

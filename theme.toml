@@ -1,0 +1,15 @@
+# theme.toml template for a Hugo theme
+# See https://github.com/gohugoio/hugoThemes#themetoml for an example
+
+name = "Juliette - API Ouputs for Hugo"
+license = "MIT"
+licenselink = "https://github.com/regisphilibert/juliette-hugo-component/blob/master/LICENSE.md"
+description = "A base theme to build your perfect API with Hugo"
+homepage = "https://github.com/regisphilibert/juliette-hugo-component"
+tags = ['API', 'component', 'JSON']
+features = []
+min_version = "0.45"
+
+[author]
+  name = "Regis Philibert"
+  homepage = "https://regisphilibert.com"
