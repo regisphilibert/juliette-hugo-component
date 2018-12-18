@@ -111,6 +111,20 @@ I'm afraid this Juliette's Pagination Feature is therefor limited to projects wi
 
 You can try and fight this by making the desired Juliette Output Format on the top of your output list for a given page kind. But bear in mind that by doing so, your risk encountering issues in this page's other template files. (ex. `.Permalink` will output the main output format's permalink from `single.html` 🤷‍♂️)
 
+##### pagination_append
+(default: "index.json")
+
+```
+params:
+  juliette:
+    pagination: 3
+    pagination_append: index.xml
+```
+
+From the Warning above, if you are using Pagination, this means your Main Output format is rendered by Juliette.
+Juliette cannot retrieve the baseName of your main Output Format file, and needs it to append Hugo's Pagination pagers' `.URL` returned value which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
+
+
 ## Advanced customization
 
 You're probably there because you won't content with some basic keys in your endpoints. With a bit of coding, Juliette lets you shape your data model through "transformers".

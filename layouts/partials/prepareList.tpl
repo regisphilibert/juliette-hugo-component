@@ -4,15 +4,14 @@
 	{{- $.Scratch.Set "pages" $pagi.Pages -}}
 	{{- $.Scratch.SetInMap "pagination" "page" $pagi.PageNumber -}}
 	{{- $.Scratch.SetInMap "pagination" "pages" $pagi.TotalPages -}}
-	{{- $.Scratch.SetInMap "pagination" "self" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.URL)) -}}
-	{{- $.Scratch.SetInMap "pagination" "first" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.First.URL)) -}}
-	{{- $.Scratch.SetInMap "pagination" "last" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.Last.URL)) -}}
-	{{- $.Scratch.SetInMap "pagination" "test" $pagi.Last.URL -}}
+	{{- $.Scratch.SetInMap "pagination" "self" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.URL | absURL))) -}}
+	{{- $.Scratch.SetInMap "pagination" "first" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.First.URL| absURL))) -}}
+	{{- $.Scratch.SetInMap "pagination" "last" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Last.URL | absURL))) -}}
 	{{- if $pagi.HasNext -}}
-	{{- $.Scratch.SetInMap "pagination" "next" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.Next.URL)) -}}
+	{{- $.Scratch.SetInMap "pagination" "next" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Next.URL | absURL))) -}}
 	{{- end -}}
 	{{- if $pagi.HasPrev -}}
-	{{- $.Scratch.SetInMap "pagination" "prev" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.Prev.URL)) -}}
+	{{- $.Scratch.SetInMap "pagination" "prev" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Prev.URL | absURL))) -}}
 	{{ end }}
 	{{- $.Scratch.SetInMap "data" "pagination" ($.Scratch.Get "pagination") -}}
 {{- else -}}
