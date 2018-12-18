@@ -1,28 +1,3 @@
-# /api/v1.0/* /:splat
-# /* :splat/index.json 200
-# /api/v1.0/* /:splat/index.json 200
-{{- $params := dict -}}
-{{- $slug := false -}}
-{{- $beautify := false -}}
-{{- with .Site.Params.juliette -}}
-{{- $params = . -}}
-{{- end -}}
-{{- with $params.slug -}}
-{{- $slug = . -}}
-{{- end -}}
-{{- with $params.beautify -}}
-{{- $beautify = . -}}
-{{- end -}}
-{{- $output := false -}}
-{{- if $slug -}}
-{{- $output = printf "/%s/* /:splat 200" $slug}}
-{{- end}}
-{{- if $beautify -}}
-{{- $output =  "/* :splat/index.json 200" -}}
-{{- end}}
-{{- if (and $slug $beautify )}}
-{{- $output =  printf "/%s/* :splat/index.json 200" $slug -}}
-{{- end -}}
-{{- with $output }}
-{{ . }}
+{{- with .Param "juliette.slug" -}}
+/{{ . }} /:splat 200
 {{- end -}}

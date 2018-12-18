@@ -8,28 +8,29 @@
 {{- with .Params.lastMod -}}
 {{- $.Scratch.SetInMap "item" "updated" . -}}
 {{- end -}}
-{{- $s.Set "translations" slice -}}
+{{- $translations := slice -}}
 {{- with .Translations -}}
 	{{- range . -}}
-		{{- $s.Add "translations" (dict "lang" .Lang "url" .Permalink) -}}
+		{{- $translations = $translations | append (dict "lang" .Lang "url" .Permalink) -}}
 	{{- end -}}
 {{- end -}}
-{{- with $s.Get "translations" -}}
+{{- with $translations -}}
 	{{- $.Scratch.SetInMap "item" "translations" . -}}
 {{- end -}}
-{{- $s.Set "urls" slice -}}
+{{- $urls := slice -}}
 {{- with .OutputFormats -}}
 	{{- range . -}}
 		{{- $output_url := .Permalink -}}
 		{{- if ne .MediaType.Type "text/html" -}}
-			{{- $output_url = partial "formatURL.tmpl" (dict "page" $ "url" .Permalink) -}}
+			{{- $output_url = partial "formatURL.tpl" (dict "page" $ "url" .Permalink) -}}
 		{{- end -}}
-		{{- $s.Add "urls" (dict "type" .MediaType.SubType "url" $output_url) -}}
+		{{- $urls = $urls | append (dict "type" .MediaType.SubType "url" $output_url) -}}
 	{{- end -}}
 {{- end -}}
-{{- with $s.Get "urls" -}}
+{{- with $urls -}}
 	{{- $.Scratch.SetInMap "item" "endpoints" . -}}
 {{- end -}}
 {{- .Scratch.SetInMap "item" "type" .Type -}}
 {{- .Scratch.SetInMap "item" "draft" (default false .Draft) -}}
 {{- .Scratch.SetInMap "item" "permalink" .Permalink -}}
+{{- .Scratch.SetInMap "item" "relpermalink" .RelPermalink -}}

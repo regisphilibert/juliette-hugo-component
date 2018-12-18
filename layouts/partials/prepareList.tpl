@@ -1,25 +1,25 @@
-{{- .Scratch.Set "items" slice -}}
+à{{- .Scratch.Set "items" slice -}}
 {{- with (.Param "juliette.pagination") -}}
 	{{- $pagi := $.Paginator . -}}
 	{{- $.Scratch.Set "pages" $pagi.Pages -}}
 	{{- $.Scratch.SetInMap "pagination" "page" $pagi.PageNumber -}}
 	{{- $.Scratch.SetInMap "pagination" "pages" $pagi.TotalPages -}}
-	{{- $.Scratch.SetInMap "pagination" "self" (partial "formatURL.tmpl" (dict "page" $ "url" $pagi.URL)) -}}
-	{{- $.Scratch.SetInMap "pagination" "first" (partial "formatURL.tmpl" (dict "page" $ "url" $pagi.First.URL)) -}}
-	{{- $.Scratch.SetInMap "pagination" "last" (partial "formatURL.tmpl" (dict "page" $ "url" $pagi.Last.URL)) -}}
+	{{- $.Scratch.SetInMap "pagination" "self" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.URL)) -}}
+	{{- $.Scratch.SetInMap "pagination" "first" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.First.URL)) -}}
+	{{- $.Scratch.SetInMap "pagination" "last" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.Last.URL)) -}}
 	{{- $.Scratch.SetInMap "pagination" "test" $pagi.Last.URL -}}
 	{{- if $pagi.HasNext -}}
-	{{- $.Scratch.SetInMap "pagination" "next" (partial "formatURL.tmpl" (dict "page" $ "url" $pagi.Next.URL)) -}}
+	{{- $.Scratch.SetInMap "pagination" "next" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.Next.URL)) -}}
 	{{- end -}}
 	{{- if $pagi.HasPrev -}}
-	{{- $.Scratch.SetInMap "pagination" "prev" (partial "formatURL.tmpl" (dict "page" $ "url" $pagi.Prev.URL)) -}}
+	{{- $.Scratch.SetInMap "pagination" "prev" (partial "formatURL.tpl" (dict "pagination" true "page" $ "url" $pagi.Prev.URL)) -}}
 	{{ end }}
 	{{- $.Scratch.SetInMap "data" "pagination" ($.Scratch.Get "pagination") -}}
 {{- else -}}
 	{{- $.Scratch.Set "pages" .Pages -}}
 {{ end }}
 {{- range (.Scratch.Get "pages") -}}
-	{{ partial "getTransformer.tmpl" . }}
+	{{ partial "getTransformer.tpl" . }}
 	{{- $.Scratch.Add "items" (slice (.Scratch.Get "item")) -}}
 {{- end -}}
 {{- with eq .Kind "section" -}}

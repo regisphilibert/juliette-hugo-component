@@ -1,6 +1,6 @@
-{{- $partial := printf "transformers/%s.tmpl" .Type -}}
+{{- $partial := printf "transformers/%s.tpl" .Type -}}
 {{- if templates.Exists (printf "partials/%s" $partial) -}}
 	{{- partial $partial . -}}
 {{- else -}}
-	{{- partial "transformers/default.tmpl" . -}}
+	{{- partial "transformers/default.tpl" . -}}
 {{- end -}}

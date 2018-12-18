@@ -1,2 +1,2 @@
-{{ partial "prepareList.tmpl" . }}
+{{ partial "prepareList.tpl" . }}
 {{- .Scratch.Get "output" | jsonify -}}

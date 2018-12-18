@@ -1,3 +1,0 @@
-{{ with .Param "juliette.slug" -}}
-	RewriteRule ^{{ . }}/(.*)$ $1/index.json [L]
-{{- end -}}

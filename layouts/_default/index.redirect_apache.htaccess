@@ -1,0 +1,6 @@
+{{ with .Param "juliette.slug" -}}
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^{{ . }}/(.*)$ $1 [L]
+</IfModule>
+{{- end -}}
