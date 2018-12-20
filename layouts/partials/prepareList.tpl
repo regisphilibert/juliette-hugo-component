@@ -1,4 +1,4 @@
-à{{- .Scratch.Set "items" slice -}}
+{{- .Scratch.Set "items" slice -}}
 {{- with (.Param "juliette.pagination") -}}
 	{{- $pagi := $.Paginator . -}}
 	{{- $.Scratch.Set "pages" $pagi.Pages -}}
@@ -16,7 +16,7 @@
 	{{- $.Scratch.SetInMap "data" "pagination" ($.Scratch.Get "pagination") -}}
 {{- else -}}
 	{{- $.Scratch.Set "pages" .Pages -}}
-{{ end }}
+{{- end -}}
 {{- range (.Scratch.Get "pages") -}}
 	{{ partial "getTransformer.tpl" . }}
 	{{- $.Scratch.Add "items" (slice (.Scratch.Get "item")) -}}
@@ -24,7 +24,7 @@
 {{- with eq .Kind "section" -}}
 {{- $.Scratch.SetInMap "data" "section" $.Section -}}
 {{- end -}}
-{{ with eq .Kind "taxonomy" -}}
+{{- with eq .Kind "taxonomy" -}}
 {{- $.Scratch.SetInMap "data" "taxonomy" $.Data.Singular -}}
 {{- $.Scratch.SetInMap "data" "term" $.Data.Term -}}
 {{- end -}}

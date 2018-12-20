@@ -20,9 +20,9 @@
 	{{- $url = $append | add $url -}}
 {{- end -}}
 
-{{ with $slug }}
+{{- with $slug -}}
 	{{- $urlObject := urls.Parse $url -}}
 	{{- $url = replace ($url | absURL) $urlObject.Path (printf (cond (ne $slug "") "/%s%s" "%s%s") $slug $urlObject.Path) -}}
-{{ end }}
+{{- end -}}
 
 {{- $url | absURL | safeURL -}}
