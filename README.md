@@ -180,4 +180,4 @@ Watch out of infinite depth objects.
 Yeah! Ain't it great to be on first name basis with a cool tool? Then you can write "Juliette does this", "Juliette does that"! It abstracts any blameable humans involved and replace them by a cute moniker. Perfect!
 
 ### Sure... who's Juliette?
-[Juliette Drouet](https://en.wikipedia.org/wiki/Juliette_Drouet) was personnal secretary and lover to [Victor Hugo](https://en.wikipedia.org/wiki/Victor_Hugo). Just like an API endpoint, she lived in the shadow of a great <del>man</del>site.
+[Juliette Drouet](https://en.wikipedia.org/wiki/Juliette_Drouet) was personnal secretary and lover to [Victor Hugo](https://en.wikipedia.org/wiki/Victor_Hugo). Just like an API endpoint, she lived in the shadow of a great <del>man</del> site.
