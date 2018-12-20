@@ -1,13 +1,17 @@
 {{- $params := dict -}}
 {{- $slug := "" -}}
+{{- $beautify := false -}}
 {{- $site := .page.Site -}}
 {{- $page := .page -}}
-{{- $isServer := $site.IsServer -}}
+{{- $isServer := false -}}
 
 {{- $append := false -}}
-{{- with .page.Param "juliette.slug" -}}
-	{{- if not $isServer -}}
+{{- if not $isServer -}}
+	{{- with .page.Param "juliette.slug" -}}
 		{{- $slug = . -}}
+	{{- end -}}
+	{{- with .page.Param "juliette.beautify" -}}
+		{{- $beautify = true -}}
 	{{- end -}}
 {{- end -}}
 
@@ -24,5 +28,7 @@
 	{{- $urlObject := urls.Parse $url -}}
 	{{- $url = replace ($url | absURL) $urlObject.Path (printf (cond (ne $slug "") "/%s%s" "%s%s") $slug $urlObject.Path) -}}
 {{- end -}}
-
+{{- with $beautify -}}
+	{{- $url = strings.TrimRight "index.json" $url -}}
+{{- end -}}
 {{- $url | absURL | safeURL -}}

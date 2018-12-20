@@ -1,3 +1,22 @@
-{{- with .Param "juliette.slug" -}}
-/{{ . }}/* /:splat 200
+{{- $slug := false -}}
+{{- $beautify := false -}}
+{{- $params := .Site.Params.juliette -}}
+{{- with $params -}}
+	{{- with .slug -}}
+		{{- $slug = . -}}
+	{{- end -}}
+	{{- with .beautify -}}
+		{{- $beautify = . -}}
+	{{- end -}}
+{{- end -}}
+{{- $rule := "/*" -}}
+{{- with $slug -}}
+	{{- $rule = printf "/%s/*" . -}}
+{{- end -}}
+{{- $point := "/:splat" -}}
+{{- with $beautify -}}
+	{{- $point = "/:splat/index.json" -}}
+{{- end -}}
+{{- if or $beautify $slug -}}
+	{{- printf "%s %s 200" $rule $point -}}
 {{- end -}}

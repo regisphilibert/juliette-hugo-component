@@ -40,7 +40,7 @@ Adding another output format is therefor limited to creating a few new templates
 
 You're done! Go get that endpoint at `my-perfect-website.com/index.json`
 
-### Options
+## Options
 
 Juliette options live in your `.Site.Params` under the `juliette` object as such:
 
@@ -51,21 +51,33 @@ params:
     pagination: 3
 ```
 
-#### slug
+### Permalinks
 
-Using the site params' `juliette.slug`, Juliette will prepend urls using the set value by adding a redirection file to your `publishDir` thanks to Hugo's Custom Output Format and modify your page's URL reference throughout.
+#### beautify [bool]:
+
+If `beautify` is set to true, Juliette will get rid of this ulgy `index.json` at the end of your urls, redirect accordingly and modify any reference to the urls throughout.
+
+#### slug [string]:
+If a `slug` is given Juliette will prepend every URL with the given string, redirect accordingly and modify any reference to the urls throughout
+
+Is is greatly recommanded to use a `slug` in conjunction with `beautify`,if your project sports one than one output per page. Otherwise both HTML and JSON output will use the same URL thereof.
+
+#### How does that work?
+
+Juliette, creates redirect files with the generated rules and add them to your project.
 
 Available redirect solution:
-- Netlify: Using `redirect_netlify` output format on the homepage, Juliette will create a `_redirect` file.
-- Apache: Using `redirect_apache`output format on the homepage, Juliette will create a `.htaccess` file.
+- Netlify: With `redirect_netlify` output format set on the homepage, Juliette will create a `_redirect` file.
+- Apache: With `redirect_apache` output format set on the homepage, Juliette will create a `.htaccess` file.
 
-If you need to overwrite those, add your own `layouts/_default/index.redirect_netlify` or `layouts/_default/index.redirect_apache.htaccess` to your project to overwrite Juliette's.
+Add your own `layouts/_default/index.redirect_netlify` or `layouts/_default/index.redirect_apache.htaccess` to your project to overwrite Juliette's.
 
 Ex. The following configuration:
 
 ```
 params:
   juliette:
+    beautify: true
     slug: 'api/v1.0'
 
 outputs:
@@ -75,12 +87,14 @@ outputs:
     - redirect_netlify
 ```
 
-Will make `/recipes/choco-cupcakes/index.json` available at `/api/v1.0/recipes/choco-cupcakes/index.json` on a Netlify hosted project.
+Will make `/recipes/choco-cupcakes/index.json` available at `/api/v1.0/recipes/choco-cupcakes/` on a Netlify hosted project.
 
 **Warning**
 Not available on live server, for obvious reasons.
 
-#### pagination
+### Pagination
+
+#### pagination [int]
 
 Note that this option can be set on the site or page level, either underneath your `config.yaml` `params.juliette` object or right in your list page's Front Matter.
 
@@ -106,13 +120,13 @@ Juliette will paginate your list pages with 3 entries per page and output a nice
 ```
 
 **Warning***
-Hugo does not currently allow pagination to work on serveral Output Format. Only the main one can handle pagination. 
-I'm afraid this Juliette's Pagination Feature is therefor limited to projects with only one Output from Juliette, meaning API only projects. 
+Hugo does not currently allow pagination to work on multiple Output Format, pagination will therfore only work on the Main Ouput format, the first in the list of outputs for any given page kind.
 
-You can try and fight this by making the desired Juliette Output Format on the top of your output list for a given page kind. But bear in mind that by doing so, your risk encountering issues in this page's other template files. (ex. `.Permalink` will output the main output format's permalink from `single.html` 🤷‍♂️)
+If you decide to go ahead and use Juliette's pagination by setting its output as the Main one, simply bear in mind the following:
+1. Other Output Format pagination will be broken.
+2. In your HTML templates, you should replace `.Permalink` with `(.OutputFormats.Get "html").Permalink`.
 
-##### pagination_append
-(default: "index.json")
+##### pagination_append [string | "index.json"]
 
 ```
 params:
@@ -121,8 +135,8 @@ params:
     pagination_append: index.xml
 ```
 
-From the Warning above, if you are using Pagination, this means your Main Output format is rendered by Juliette.
-Juliette cannot retrieve the baseName of your main Output Format file, and needs it to append Hugo's Pagination pagers' `.URL` returned value which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
+As mentionned earlier, if you are using Pagination, this means your Main Output format is rendered by Juliette.
+Juliette cannot retrieve the baseName of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
 
 
 ## Advanced customization
@@ -133,26 +147,24 @@ You're probably there because you won't content with some basic keys in your end
 
 When rendering the output of an entry, be it from its single page or a list page, Juliette uses the entry type's transformer partial if available. 
 
-`content/recipe/chocolate-cupcake.md` will use the transformer located at `layouts/partials/transformers/recipe.tpml`
+`content/recipe/chocolate-cupcake.md` will use the transformer located at `layouts/partials/transformers/recipe.tpl`
 
-Look inside [`/layouts/partials/transformers`](/layouts/partials/transformers) for the best way to create new transformers. You can use the default transformer as a base of key value pairs to be included in all of your transformers. 
+Look inside [`/layouts/partials/transformers`](/layouts/partials/transformers) for the best way to create new transformers. You can use the default transformer as a base of key value pairs to be included in all of your transformers.
 
 ### Nested Transformers
 
 If you need to use a content type transformer inside another content type transformer for say, listing related content, you can "cautiously" do it this way:
 ```
 {{ partial "transformers/default.tmpl" . }}
-{{- .Scratch.SetInMap "item" "year" .Params.year -}}
 {{- $rootScratch := .Scratch }}
-{{ $related := where (.Site.RegularPages.Related) "Type" "recipe" }}
-{{ $s := newScratch }}
-{{ $s.Add "related" (slice) }}
-{{ range $related }}
+{{ $related_recipes := where (.Site.RegularPages.Related) "Type" "recipe" }}
+{{ $related := slice }}
+{{ range $related_recipes }}
   {{- partial "getTransformer.tmpl" . -}}
-  {{ $s.Add "related" (.Scratch.Get "item") }}
+  {{ $related = $related | append (.Scratch.Get "item") }}
   {{- .Scratch.Delete "item" -}}
 {{ end }}
-{{ .Scratch.SetInMap "item" "related" ($s.Get "related") }}
+{{ .Scratch.SetInMap "item" "related" $related }}
 
 **Warning**
 Watch out of infinite depth objects.
