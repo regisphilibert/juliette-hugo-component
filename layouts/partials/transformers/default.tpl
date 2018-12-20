@@ -28,7 +28,7 @@
 	{{- end -}}
 {{- end -}}
 {{- with $urls -}}
-	{{- $.Scratch.SetInMap "item" "endpoints" . -}}
+	{{- $.Scratch.SetInMap "item" "outputs" . -}}
 {{- end -}}
 {{- .Scratch.SetInMap "item" "type" .Type -}}
 {{- .Scratch.SetInMap "item" "draft" (default false .Draft) -}}
