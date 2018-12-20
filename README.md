@@ -119,7 +119,7 @@ Juliette will paginate your list pages with 3 entries per page and output a nice
 }
 ```
 
-**Warning***
+**Warning**
 Hugo does not currently allow pagination to work on multiple Output Format, pagination will therfore only work on the Main Ouput format, the first in the list of outputs for any given page kind.
 
 If you decide to go ahead and use Juliette's pagination by setting its output as the Main one, simply bear in mind the following:
@@ -154,6 +154,7 @@ Look inside [`/layouts/partials/transformers`](/layouts/partials/transformers) f
 ### Nested Transformers
 
 If you need to use a content type transformer inside another content type transformer for say, listing related content, you can "cautiously" do it this way:
+
 ```
 {{ partial "transformers/default.tmpl" . }}
 {{- $rootScratch := .Scratch }}
@@ -165,6 +166,7 @@ If you need to use a content type transformer inside another content type transf
   {{- .Scratch.Delete "item" -}}
 {{ end }}
 {{ .Scratch.SetInMap "item" "related" $related }}
+```
 
 **Warning**
 Watch out of infinite depth objects.
