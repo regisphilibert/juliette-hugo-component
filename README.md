@@ -7,7 +7,7 @@ Every formatting and transforming happens on the data level so template files of
 ## Who's Juliette best for?
 
 Juliette is best fit for any of the following use case:
-- You have a have heavy need of highly customizable endpoints and some basic understanding of Hugo's templating magic, including but not limited to `.Scratch`.
+- You have a heavy need of highly customizable endpoints and some basic understanding of Hugo's templating magic, including but not limited to `.Scratch`.
 - You don't need to customize your output and can rely on Juliette's default transformers.
 
 If you need to customize your output but do no want to get involved in coding __and__ all you need is JSON,I recommand this great alternative to Juliette by [DJ Walker](https://github.com/dwalkr/): [Hugo JSON API Theme component](https://github.com/dwalkr/hugo-json-api-component). There's some basic output transforming with zero coding involved!
@@ -136,7 +136,7 @@ params:
 ```
 
 As mentionned earlier, if you are using Pagination, this means your Main Output format is rendered by Juliette.
-Juliette cannot retrieve the `baseName` of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
+Juliette cannot retrieve the `baseName of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
 
 
 ## Advanced customization
