@@ -1,0 +1,13 @@
+{{- if gt hugo.Version 0.53 }}
+	{{- partial "prepareSingle.tpl" . -}}
+	{{- $data := .Scratch.Get "output" -}}
+	{{- range $index, $value := $data -}}
+		{{ if reflect.IsSlice $value }}
+			{{ $key }} is a Slice.
+		{{ else if reflect.IsMap $value }}
+		{{ $key }} is a Map.
+		{{ else }}
+		{{ $key }} is a String.
+		{{ end }}
+	{{- end -}}
+{{- end -}}
