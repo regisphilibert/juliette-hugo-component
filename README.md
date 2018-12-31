@@ -1,14 +1,14 @@
 # Juliette is a Hugo API Theme Component
 
-This [Hugo](https://gohugo.io) theme component will add API endpoints your Hugo project.
+This [Hugo](https://gohugo.io) theme component will add API endpoints to your Hugo project.
 
 Every formatting and transforming happens on the data level so template files of any output can rely on a consistent data model.
 
 ## Who's Juliette best for?
 
-Juliette is best fit if 
-1. You have a have heavy need of highly customizable endpoints and some basic understanding of Hugo's templating magic, including but not limited to `.Scratch`.
-2. You don't need to customize your output and can rely on Juliette's default transformers.
+Juliette is best fit for any of the following use case:
+- You have a have heavy need of highly customizable endpoints and some basic understanding of Hugo's templating magic, including but not limited to `.Scratch`.
+- You don't need to customize your output and can rely on Juliette's default transformers.
 
 If you need to customize your output but do no want to get involved in coding __and__ all you need is JSON,I recommand this great alternative to Juliette by [DJ Walker](https://github.com/dwalkr/): [Hugo JSON API Theme component](https://github.com/dwalkr/hugo-json-api-component). There's some basic output transforming with zero coding involved!
 
@@ -58,9 +58,9 @@ params:
 If `beautify` is set to true, Juliette will get rid of this ulgy `index.json` at the end of your urls, redirect accordingly and modify any reference to the urls throughout.
 
 #### slug [string]:
-If a `slug` is given Juliette will prepend every URL with the given string, redirect accordingly and modify any reference to the urls throughout
+If a `slug` is given Juliette will prepend every URL with the given string, redirect accordingly and modify any references to the urls throughout your project.
 
-Is is greatly recommanded to use a `slug` in conjunction with `beautify`,if your project sports one than one output per page. Otherwise both HTML and JSON output will use the same URL thereof.
+Is is greatly recommanded to use a `slug` in conjunction with `beautify` if your project sports more than one output per page. Otherwise both HTML and JSON output will use the same URL thereof.
 
 #### How does that work?
 
@@ -113,14 +113,14 @@ Juliette will paginate your list pages with 3 entries per page and output a nice
   "first":"http://juliette.api/index.json",
   "last":"http://juliette.api/page/7/index.json",
   "next":"http://juliette.api/page/3/index.json",
-  "page":1,
-  "pages":2,
+  "page":3,
+  "pages":7,
   "self":"http://localhost:1313/page/3/index.json"
 }
 ```
 
 **Warning**
-Hugo does not currently allow pagination to work on multiple Output Format, pagination will therfore only work on the Main Ouput format, the first in the list of outputs for any given page kind.
+Hugo does not currently allow pagination to work on multiple Output Formats, pagination will therfore only work on the Main Ouput format, the first in the list of outputs for any given page kind.
 
 If you decide to go ahead and use Juliette's pagination by setting its output as the Main one, simply bear in mind the following:
 1. Other Output Format pagination will be broken.
@@ -136,7 +136,7 @@ params:
 ```
 
 As mentionned earlier, if you are using Pagination, this means your Main Output format is rendered by Juliette.
-Juliette cannot retrieve the baseName of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
+Juliette cannot retrieve the `baseName` of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
 
 
 ## Advanced customization
