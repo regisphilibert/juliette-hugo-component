@@ -1,4 +1,4 @@
-{{- partial "prepareSingle.tpl" . -}}
+{{- partial "prepareList.tpl" . -}}
 {{- $data := .Scratch.Get "output" -}}
 {{ printf `<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>` | safeHTML }}
 <data>
