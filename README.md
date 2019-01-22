@@ -136,7 +136,7 @@ params:
 ```
 
 As mentionned earlier, if you are using Pagination, this means your Main Output format is rendered by Juliette.
-Juliette cannot retrieve the `baseName of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
+Juliette cannot retrieve the `baseName` of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
 
 
 ## Advanced customization
