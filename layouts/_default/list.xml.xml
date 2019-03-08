@@ -1,0 +1,8 @@
+{{- partial "prepareList.tpl" . -}}
+{{- $data := .Scratch.Get "output" -}}
+{{ printf `<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>` | safeHTML }}
+<data>
+{{- range $key, $value := $data -}}
+	{{- partial "juliette_xml_entry.xml" (dict "key" $key "value" $value) -}}
+{{- end -}}
+</data>
