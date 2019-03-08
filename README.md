@@ -12,11 +12,12 @@ Juliette is best fit if
 
 If you need to customize your output but do no want to get involved in coding __and__ all you need is JSON,I recommand this great alternative to Juliette by [DJ Walker](https://github.com/dwalkr/): [Hugo JSON API Theme component](https://github.com/dwalkr/hugo-json-api-component). There's some basic output transforming with zero coding involved!
 
-## This is JSON right?
+## What are the supported Output Formats?
 
-Yes. But not limited to! 
-Juliette focuses on helping you buid a consistent data object for each page with `.Scratch` and outputs it out of the box using `jsonify`. 
-Adding another output format is therefor limited to creating a few new templates files from this consistent data model.
+Out of the box, Juliette can produce JSON and XML (v1).
+
+But this is not a limit. Juliette focuses on helping you buid a consistent data object for each page with `.Scratch`. 
+Adding your own output format is therefor limited to creating a few new templates files from this consistent data model.
 
 ## Getting Started
 
