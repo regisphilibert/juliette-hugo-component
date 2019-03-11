@@ -21,8 +21,8 @@ Adding your own output format is therefor limited to creating a few new template
 
 ## Getting Started
 
-1. `git submodule add https://github.com/regisphilibert/juliette-api-component themes/juliette-api-component`
-2. Add `juliette-api-component` as your theme or to your list of themes.
+1. `git submodule add https://github.com/regisphilibert/juliette-hugo-component themes/juliette-hugo-component`
+2. Add `juliette-hugo-component` as your theme or to your list of themes.
   ```
   theme:
     - that-theme-i-have
