@@ -1,5 +1,4 @@
-{{- partial "prepareList.tpl" . -}}
-{{- $data := .Scratch.Get "output" -}}
+{{- $data := partial "juliette/prepareList" . -}}
 {{ printf `<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>` | safeHTML }}
 <data>
 {{- range $key, $value := $data -}}

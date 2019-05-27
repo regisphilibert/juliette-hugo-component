@@ -1,0 +1,16 @@
+{{/*
+  prepareSingle
+  This fetch the transformer of one entry and return its data
+
+  @author @regisphilibert
+
+  @context Page (.)
+
+  @access private
+
+  @return Map of processed data
+
+*/}}
+{{- $data := partial "juliette/transform" . -}}
+
+{{- return (dict "output" (dict "data" $data)) -}}

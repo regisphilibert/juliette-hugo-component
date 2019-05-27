@@ -1,0 +1,58 @@
+{{/*
+	Default Transformer
+
+	@author @regisphilibert
+
+	@context (Page) .
+
+	@return Map of the page's transformed data
+
+	@access private
+
+	@example - Go Template
+		{{ partial"transformers/default" . }}
+*/}}
+{{ $s := newScratch }}
+{{ with .Title }}
+	{{ $s.SetInMap "item" "title" . }}	
+{{ end }}
+{{ with .Date }}
+	{{ $s.SetInMap "item" "created" . }}
+{{ end }}
+{{ with .Params.lastMod }}
+{{ $s.SetInMap "item" "updated" . }}
+{{ end }}
+
+{{/* Translations */}}
+{{ $translations := slice }}
+{{ with .Translations }}
+	{{ range . }}
+		{{ $translations = $translations | append (dict "lang" .Lang "url" .Permalink) }}
+	{{ end }}
+{{ end }}
+{{ with $translations }}
+	{{ $s.SetInMap "item" "translations" . }}
+{{ end }}
+
+{{/* Output Formats */}}
+{{ $urls := slice }}
+{{ with .OutputFormats }}
+	{{ range . }}
+		{{ $output_url := .Permalink }}
+		{{ if ne .MediaType.Type "text/html" }}
+			{{ $output_url = partial "juliette/formatURL.tpl" (dict "page" $ "url" .Permalink) }}
+		{{ end }}
+		{{ $urls = $urls | append (dict "type" .MediaType.SubType "url" $output_url) }}
+	{{ end }}
+{{ end }}
+{{ with $urls }}
+	{{ $s.SetInMap "item" "outputs" . }}
+{{ end }}
+
+{{/* Others */}}
+{{ $s.SetInMap "item" "type" .Type }}
+{{ $s.SetInMap "item" "draft" (default false .Draft) }}
+{{ $s.SetInMap "item" "permalink" .Permalink }}
+{{ $s.SetInMap "item" "relpermalink" .RelPermalink }}
+
+{{ return $s.Get "item" }}
