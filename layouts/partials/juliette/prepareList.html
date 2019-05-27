@@ -20,14 +20,14 @@
 	{{ $s.Set "pages" $pagi.Pages }}
 	{{ $s.SetInMap "pagination" "page" $pagi.PageNumber }}
 	{{ $s.SetInMap "pagination" "pages" $pagi.TotalPages }}
-	{{ $s.SetInMap "pagination" "self" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.URL | absURL))) }}
-	{{ $s.SetInMap "pagination" "first" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.First.URL| absURL))) }}
-	{{ $s.SetInMap "pagination" "last" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Last.URL | absURL))) }}
+	{{ $s.SetInMap "pagination" "self" (partial "juliette/formatURL" (dict "page" $ "url" ($pagi.URL | absURL))) }}
+	{{ $s.SetInMap "pagination" "first" (partial "juliette/formatURL" (dict "page" $ "url" ($pagi.First.URL| absURL))) }}
+	{{ $s.SetInMap "pagination" "last" (partial "juliette/formatURL" (dict "page" $ "url" ($pagi.Last.URL | absURL))) }}
 	{{ if $pagi.HasNext }}
-	{{ $s.SetInMap "pagination" "next" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Next.URL | absURL))) }}
+	{{ $s.SetInMap "pagination" "next" (partial "juliette/formatURL" (dict "page" $ "url" ($pagi.Next.URL | absURL))) }}
 	{{ end }}
 	{{ if $pagi.HasPrev }}
-	{{ $s.SetInMap "pagination" "prev" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Prev.URL | absURL))) }}
+	{{ $s.SetInMap "pagination" "prev" (partial "juliette/formatURL" (dict "page" $ "url" ($pagi.Prev.URL | absURL))) }}
 	{{ end }}
 	{{ $s.SetInMap "data" "pagination" ($s.Get "pagination") }}
 {{ else }}

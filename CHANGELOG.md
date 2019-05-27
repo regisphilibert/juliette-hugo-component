@@ -10,8 +10,8 @@ We drop Pages' `.Scratch` to handle data processing in favor of the new `return`
 - [x] Rename partial and revert to using `.html` extension
 - [x] Change tab size 2 spaces.
 - [x] Add commenting
-- [ ] Rewrite `formatURl.tpl`
-- [ ] Improve Pagination logic now that output formats limitations have been lifted by .55.0
+- [x] Rewrite `formatURL`
+- [x] Improve Pagination logic now that output formats limitations have been lifted by .55.0
 - [ ] Add an upgrade guide to the README
 
 ## [0.2.0] - 2019-03-08 (@regisphilibert)  

@@ -14,7 +14,7 @@ If you need to customize your output but do no want to get involved in coding __
 
 ## What are the supported Output Formats?
 
-Out of the box, Juliette can produce JSON and XML (v1).
+Out of the box, Juliette can produce JSON and XML.
 
 But this is not a limit. Juliette focuses on helping you buid a consistent data object for each page. 
 Adding your own output format is therefor limited to creating a few new templates files pulling from this consistent data model.
@@ -28,15 +28,19 @@ Adding your own output format is therefor limited to creating a few new template
     - that-theme-i-have
     - juliette-api-component
   ```
-3. Add JSON as an Output format for the desired page kind:
+3. Add JSON and/or XML as an Output format for the desired page kind:
   ```
   outputs:
     home:
       - HTML
       - JSON
+    section:
+      - HTML
+      - JSON
     page:
       - HTML
       - JSON
+      - XML
   ```
 
 You're done! Go get that endpoint at `my-perfect-website.com/index.json`
@@ -59,7 +63,7 @@ params:
 If `beautify` is set to true, Juliette will get rid of this ulgy `index.json` at the end of your urls, redirect accordingly and modify any reference to the urls throughout.
 
 #### slug [string]:
-If a `slug` is given Juliette will prepend every URL with the given string, redirect accordingly and modify any references to the urls throughout your project.
+If a `slug` is given Juliette will prepend every URL with the given string, redirect accordingly and modify any reference to the urls throughout your project.
 
 Is is greatly recommanded to use a `slug` in conjunction with `beautify` if your project sports more than one output per page. Otherwise both HTML and JSON output will use the same URL thereof.
 
@@ -119,26 +123,6 @@ Juliette will paginate your list pages with 3 entries per page and output a nice
   "self":"http://localhost:1313/page/3/index.json"
 }
 ```
-
-**Warning**
-Hugo does not currently allow pagination to work on multiple Output Formats, pagination will therfore only work on the Main Ouput format, the first in the list of outputs for any given page kind.
-
-If you decide to go ahead and use Juliette's pagination by setting its output as the Main one, simply bear in mind the following:
-1. Other Output Format pagination will be broken.
-2. In your HTML templates, you should replace `.Permalink` with `(.OutputFormats.Get "html").Permalink`.
-
-##### pagination_append [string | "index.json"]
-
-```
-params:
-  juliette:
-    pagination: 3
-    pagination_append: index.xml
-```
-
-As mentionned earlier, if you are using Pagination, this means your Main Output format is rendered by Juliette.
-Juliette cannot retrieve the `baseName` of your main Output Format file, and needs it in order to append it to Hugo's Pagination pagers' `.URL` returned value, which stops at the diretory (`/page/2/` instead of `/page/2/index.json`).
-
 
 ## Advanced customization
 
