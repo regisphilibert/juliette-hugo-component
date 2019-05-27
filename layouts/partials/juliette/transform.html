@@ -1,0 +1,35 @@
+{{/*
+  transform
+  1. This looks for the "transformer" partial corresponding to the page's .Type
+  2. cache its returned value when possible
+  3. return the value.
+
+	@author @regisphilibert
+
+	@context Page (.)
+
+	@access private
+
+	@return Map with transformed page data
+
+	@example - Go Template
+		{{ $data := partial "getTransformer" . }}
+*/}}
+{{ $return := false }}
+{{ $folder := "juliette" }}
+{{ $partialWished := printf "%s/transformers/%s.html" $folder .Type }}
+{{ $UniqueID := false }}
+{{ $partial := printf "%s/transformers/default" $folder }}
+{{ if templates.Exists (printf "partials/%s" $partialWished) }}
+	{{ $partial = $partialWished }}
+{{ end }}
+{{ with .File.UniqueID }}
+	{{ $UniqueID = . }}
+{{ end }}
+{{ with $UniqueID }}
+	{{ $return = partialCached $partial $ . }}
+{{ else }}
+	{{ $return = partial $partial . }}
+{{ end }}
+
+{{ return $return }}

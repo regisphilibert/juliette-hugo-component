@@ -16,8 +16,8 @@ If you need to customize your output but do no want to get involved in coding __
 
 Out of the box, Juliette can produce JSON and XML (v1).
 
-But this is not a limit. Juliette focuses on helping you buid a consistent data object for each page with `.Scratch`. 
-Adding your own output format is therefor limited to creating a few new templates files from this consistent data model.
+But this is not a limit. Juliette focuses on helping you buid a consistent data object for each page. 
+Adding your own output format is therefor limited to creating a few new templates files pulling from this consistent data model.
 
 ## Getting Started
 
@@ -142,40 +142,41 @@ Juliette cannot retrieve the `baseName` of your main Output Format file, and nee
 
 ## Advanced customization
 
-You're probably there because you won't content with some basic keys in your endpoints. With a bit of coding, Juliette lets you shape your data model through "transformers".
+You're probably here because you won't content with some basic keys in your endpoints. With a bit of coding, Juliette lets you shape your data model through "transformers".
 
 ### Transformers
 
 When rendering the output of an entry, be it from its single page or a list page, Juliette uses the entry type's transformer partial if available. 
 
-`content/recipe/chocolate-cupcake.md` will use the transformer located at `layouts/partials/transformers/recipe.tpl`
+`content/recipe/chocolate-cupcake.md` will use the transformer located at `layouts/partials/juliette/transformers/recipe.html`
 
-Look inside [`/layouts/partials/transformers`](/layouts/partials/transformers) for the best way to create new transformers. You can use the default transformer as a base of key value pairs to be included in all of your transformers.
+Look inside [`/layouts/partials/juliette/transformers`](/layouts/partials/transformers) for the best way to create new transformers. You can use the default transformer as a base of key value pairs to be included in all of your transformers.
+
+Transformers uses the newly `return` directive from Hugo partial, so you don't need to worry about printing line breaks or whitespace in your markup.
 
 ### Nested Transformers
 
 If you need to use a content type transformer inside another content type transformer for say, listing related content, you can "cautiously" do it this way:
 
 ```
-{{ partial "transformers/default.tmpl" . }}
-{{- $rootScratch := .Scratch }}
+{{ $return := newScratch }}
+{{ $return.Set "item" (partial "juliette/transformers/default" .) }}
 {{ $related_recipes := where (.Site.RegularPages.Related) "Type" "recipe" }}
 {{ $related := slice }}
 {{ range $related_recipes }}
-  {{- partial "getTransformer.tmpl" . -}}
-  {{ $related = $related | append (.Scratch.Get "item") }}
-  {{- .Scratch.Delete "item" -}}
+  {{ $related = $related | append (partial "getTransformer .) }}
 {{ end }}
-{{ .Scratch.SetInMap "item" "related" $related }}
+{{ $return.SetInMap "item" "related" $related }}
+{{ return $return.Get "item" }}
 ```
 
 **Warning**
-Watch out of infinite depth objects.
+Watch out of infinite depth objects. If your pizzas list their toppings, and your toppings list their pizzas: 🍕 🌶️ 🔥 🤯
 
 ### Built-in transformers
 
-- `layouts/partials/transformers/default.tmpl`
-- `layouts/partials/transformers/page.tmpl`
+- `layouts/partials/juliette/transformers/default.html`
+- `layouts/partials/juliette/transformers/page.html`
 
 ## Another JAMStack first name?
 Yeah! Ain't it great to be on first name basis with a cool tool? Then you can write "Juliette does this", "Juliette does that"! It abstracts any blameable humans involved and replace them by a cute moniker. Perfect!

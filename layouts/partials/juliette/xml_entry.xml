@@ -2,13 +2,13 @@
 	{{- printf "<%s>" .key | safeHTML }}
 	{{- range .value -}}
 		{{ printf "<%sItem>" $.key | safeHTML }}
-		{{- partial "juliette_xml_entry.xml" (dict "key" "" "value" .) -}}
+		{{- partial "juliette/xml_entry.xml" (dict "key" "" "value" .) -}}
 		{{ printf "</%sItem>" $.key | safeHTML }}
 	{{- end -}}
 	{{ printf "</%s>" .key | safeHTML }}
 {{- else if reflect.IsMap .value -}}
 	{{- range $key, $value := .value -}}
-		{{- partial "juliette_xml_entry.xml" (dict "key" $key "value" $value) -}}
+		{{- partial "juliette/xml_entry.xml" (dict "key" $key "value" $value) -}}
 	{{- end -}}
 {{- else -}}
 {{ printf "<%[1]s>%[2]s</%[1]s>" .key (printf "%v" .value) | safeHTML }}

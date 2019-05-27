@@ -1,0 +1,56 @@
+{{/*
+    prepareList
+    This formats the data for a list pages, handling the pagination logic and sepcial meta
+
+    @author @regisphilibert
+
+    @context Page (.)
+
+	@access private
+	
+	@return Map of processed data
+
+*/}}
+{{ $s := newScratch }}
+
+{{ with (.Param "juliette.pagination") }}
+
+	{{/* With Pagination */}}
+	{{ $pagi := $.Paginator . }}
+	{{ $s.Set "pages" $pagi.Pages }}
+	{{ $s.SetInMap "pagination" "page" $pagi.PageNumber }}
+	{{ $s.SetInMap "pagination" "pages" $pagi.TotalPages }}
+	{{ $s.SetInMap "pagination" "self" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.URL | absURL))) }}
+	{{ $s.SetInMap "pagination" "first" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.First.URL| absURL))) }}
+	{{ $s.SetInMap "pagination" "last" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Last.URL | absURL))) }}
+	{{ if $pagi.HasNext }}
+	{{ $s.SetInMap "pagination" "next" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Next.URL | absURL))) }}
+	{{ end }}
+	{{ if $pagi.HasPrev }}
+	{{ $s.SetInMap "pagination" "prev" (partial "juliette/formatURL.tpl" (dict "pagination" true "page" $ "url" ($pagi.Prev.URL | absURL))) }}
+	{{ end }}
+	{{ $s.SetInMap "data" "pagination" ($s.Get "pagination") }}
+{{ else }}
+	{{/* Without Pagination */}}
+	{{ $s.Set "pages" .Pages }}
+{{ end }}
+
+{{/* Adds transformed pages to a slice */}}
+{{ $s.Set "items" slice }}
+{{ range ($s.Get "pages") }}
+	{{ $s.Add "items" (slice (partial "juliette/transform" .)) }}
+{{ end }}
+{{ $s.SetInMap "data" "items" ($s.Get "items") }}
+
+{{ with eq .Kind "section" }}
+	{{ $s.SetInMap "data" "section" $.Section }}
+{{ end }}
+
+{{ with eq .Kind "taxonomy" }}
+	{{ $s.SetInMap "data" "taxonomy" $.Data.Singular }}
+	{{ $s.SetInMap "data" "term" $.Data.Term }}
+{{ end }}
+
+{{ $s.SetInMap "data" "count" (len .Pages) }}
+
+{{ return dict "output" (dict "data" ($s.Get "data")) }}
