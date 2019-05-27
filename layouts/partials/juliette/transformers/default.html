@@ -40,7 +40,7 @@
 	{{ range . }}
 		{{ $output_url := .Permalink }}
 		{{ if ne .MediaType.Type "text/html" }}
-			{{ $output_url = partial "juliette/formatURL.tpl" (dict "page" $ "url" .Permalink) }}
+			{{ $output_url = partial "juliette/formatURL" (dict "page" $ "url" .Permalink) }}
 		{{ end }}
 		{{ $urls = $urls | append (dict "type" .MediaType.SubType "url" $output_url) }}
 	{{ end }}

@@ -1,12 +1,23 @@
-{{- $params := dict -}}
+{{/*
+  formatURL
+
+  @author @regisphilibert
+
+  @context Map (.)
+    - Page .page
+    - String .url
+
+  @access public
+
+  @example - Go Template
+    {{ $output_url = partial "juliette/formatURL" (dict "page" $ "url" .RelPermalink) }}
+    {{ $output_url = partialCached "juliette/formatURL" (dict "page" $ "url" .RelPermalink) .File.UniqueID .RelPermalink}}
+*/}}
+
 {{- $slug := "" -}}
 {{- $beautify := false -}}
-{{- $site := .page.Site -}}
-{{- $page := .page -}}
-{{- $isServer := false -}}
 
-{{- $append := false -}}
-{{- if not $isServer -}}
+{{- if not site.IsServer -}}
 	{{- with .page.Param "juliette.slug" -}}
 		{{- $slug = . -}}
 	{{- end -}}
@@ -16,13 +27,6 @@
 {{- end -}}
 
 {{- $url := .url -}}
-{{- with .pagination -}}
-	{{- $append = "index.json" -}}
-	{{- with $page.Param "juliette.pagination_append" -}}
-		{{- $append = .}}
-	{{- end -}}
-	{{- $url = $append | add $url -}}
-{{- end -}}
 
 {{- with $slug -}}
 	{{- $urlObject := urls.Parse $url -}}
@@ -31,4 +35,5 @@
 {{- with $beautify -}}
 	{{- $url = strings.TrimRight "index.json" $url -}}
 {{- end -}}
-{{- $url | absURL | safeURL -}}
+
+{{ return ($url) }}
