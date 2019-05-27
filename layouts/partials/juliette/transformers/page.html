@@ -7,19 +7,30 @@
 
   @access public
 
-  @example - Go Template
-    {{ partial"transformers/default" . }}
+  @return Map
+      - ...transformers/default
+      - menu: String
+      - Description: String
 */}}
 
-{{ $return := newScratch }}
-{{/*  Each custom transformers can use "juliette/transformers/default" as a base of key/values 
-      As getTransformer is already cached by .File.UniqueID, we don't need to use partialCached when getting the default data. */}}
-{{ $return.Set "item" (partial "juliette/transformers/default" .) }}
+{{/* We use local Scratch in order to conveniently manipulate our map before returning it. */}}
+{{ $s := newScratch }}
 
-{{/* Each subsequent extra field must be added to the local scratch stored in the $return variable  */}}
-{{ $return.SetInMap "item" "menu" (default dict .Params.menu) }}
+{{/*  Each custom transformers can use "juliette/transformers/default" as a base of key/value pairs. 
+      Let's create our a map and store the default transformer's data. */}}
+{{ $s.Set "item" (partial "juliette/transformers/default" .) }}
+
+{{/* 
+  Now we can use Scratch's .SetInMap to add key/value pairs to our local Scratch's "item" map.  */}}
+
+{{/* Menu */}}
+  {{ $s.SetInMap "item" "weight" .Weight }}
+
+{{/* Description */}}
 {{ with .Description }}
-  {{ $return.SetInMap "item" "description" . }}
+  {{ $s.SetInMap "item" "description" . }}
 {{ end }}
 
-{{ return $return.Get "item" }}
+{{/*  Finally, we return the map. 
+      Voilà! */}}
+{{ return $s.Get "item" }}

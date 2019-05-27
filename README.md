@@ -4,6 +4,8 @@ This [Hugo](https://gohugo.io) theme component will add API endpoints to your Hu
 
 Every formatting and transforming happens on the data level so template files of any output can rely on a consistent data model.
 
+⚠️ Using custom transformers? You might follow this migration guide before upgrading to 3.0.0
+
 ## Who's Juliette best for?
 
 Juliette is best fit for any of the following use case:
@@ -134,24 +136,84 @@ When rendering the output of an entry, be it from its single page or a list page
 
 `content/recipe/chocolate-cupcake.md` will use the transformer located at `layouts/partials/juliette/transformers/recipe.html`
 
-Look inside [`/layouts/partials/juliette/transformers`](/layouts/partials/transformers) for the best way to create new transformers. You can use the default transformer as a base of key value pairs to be included in all of your transformers.
+You can look inside [`/layouts/partials/juliette/transformers`](/layouts/partials/juliette/transformers) for code examples. 
+
+You can use the default transformer as a base of key value pairs to be included in all of your transformers.
 
 Transformers uses the newly `return` directive from Hugo partial, so you don't need to worry about printing line breaks or whitespace in your markup.
+
+The most explicit one being the Page Transformer:
+
+```
+{{/*
+  Page Transformer
+
+  @author @regisphilibert
+
+  @context Page (.)
+
+  @access public
+
+  @return Map
+      - ...transformers/default
+      - menu: String
+      - Description: String
+*/}}
+
+{{/* We use local Scratch in order to conveniently manipulate our map before returning it. */}}
+{{ $s := newScratch }}
+
+{{/*  Each custom transformers can use "juliette/transformers/default" as a base of key/value pairs. 
+      Let's create our a map and store the default transformer's data. */}}
+{{ $s.Set "item" (partial "juliette/transformers/default" .) }}
+
+{{/* 
+  Now we can use Scratch's .SetInMap to add key/value pairs to our local Scratch's "item" map.  */}}
+
+{{/* Menu */}}
+  {{ $s.SetInMap "item" "weight" .Weight }}
+
+{{/* Description */}}
+{{ with .Description }}
+  {{ $s.SetInMap "item" "description" . }}
+{{ end }}
+
+{{/*  Finally, we return the map. 
+      Voilà! */}}
+{{ return $s.Get "item" }}
+```
+### Using transformers.
+
+Juliette deal with those under the hood. But if you have to build your own Output Format templates, you will need to grab access those yourself. The `juliette/transform` partial determine which transformer to use on any given content file, so providing that dot is your Page's context:
+
+```
+{{ with partial "juliette/transform" . }}
+  [... Handle data...]
+{{ end }}
+```
+
+It the logic does not suit, then you can go and bypass "transform" by calling that transformer yourself:
+```
+{{ with partial "juliette/transformers/my-transformer" . }}
+  [... Handle data...]
+{{ end }}
+```
+
 
 ### Nested Transformers
 
 If you need to use a content type transformer inside another content type transformer for say, listing related content, you can "cautiously" do it this way:
 
 ```
-{{ $return := newScratch }}
-{{ $return.Set "item" (partial "juliette/transformers/default" .) }}
+{{ $s := newScratch }}
+{{ $s.Set "item" (partial "juliette/transformers/default" .) }}
 {{ $related_recipes := where (.Site.RegularPages.Related) "Type" "recipe" }}
 {{ $related := slice }}
 {{ range $related_recipes }}
-  {{ $related = $related | append (partial "getTransformer .) }}
+  {{ $related = $related | append (partial "juliette/transform .) }}
 {{ end }}
-{{ $return.SetInMap "item" "related" $related }}
-{{ return $return.Get "item" }}
+{{ $s.SetInMap "item" "related" $related }}
+{{ return $s.Get "item" }}
 ```
 
 **Warning**
@@ -161,6 +223,17 @@ Watch out of infinite depth objects. If your pizzas list their toppings, and you
 
 - `layouts/partials/juliette/transformers/default.html`
 - `layouts/partials/juliette/transformers/page.html`
+
+### Migrating your custom transformers to Juliette 3.0
+
+Juliette's public partials have moved to a reserved location to avoid collision with other Hugo Component's partials. So your custom transformers needs to move to `partials/juliette/transformers/my-transformer.html` in order to be accessible by Juliette. Also they now use the `html` extension so the extension can be ommited from the partial's path argument.
+
+| Before | After |
+| ---- | ---- |
+| `/layouts/partials/transformers/my-transformer.tpl` | `/layouts/partials/juliette/transformers/my-transformer.html` |
+| `{{ partial "transformers/my-transformer.tpl }}` | `{{ partial "juliette/transformers" }}` |
+
+Page's Scratch is dropped in favor of `return` partials to manipulate data. As local Scratch is still heavily used. This should not create too much changes in your code. Go another read to the new [Advanced Customization section](#advanced-customization)
 
 ## Another JAMStack first name?
 Yeah! Ain't it great to be on first name basis with a cool tool? Then you can write "Juliette does this", "Juliette does that"! It abstracts any blameable humans involved and replace them by a cute moniker. Perfect!
