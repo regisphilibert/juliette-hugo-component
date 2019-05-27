@@ -2,7 +2,7 @@
 	{{- printf "<%s>" .key | safeHTML }}
 	{{- range .value -}}
 		{{ printf "<%sItem>" $.key | safeHTML }}
-		{{- partial "juliette_xml_entry.xml" (dict "key" "" "value" .) -}}
+		{{- partial "juliette/xml_entry.xml" (dict "key" "" "value" .) -}}
 		{{ printf "</%sItem>" $.key | safeHTML }}
 	{{- end -}}
 	{{ printf "</%s>" .key | safeHTML }}

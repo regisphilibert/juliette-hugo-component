@@ -1,6 +1,7 @@
 ## [0.3.0] (unrelease)
 
-This is a major release with **breaking changes**:
+This is a major release. 
+If you're using custom transformers, it comes with pleasant **breaking changes**.
 
 We drop Pages' `.Scratch` to handle data processing in favor of the new `return` syntax available for partials since Hugo 0.55.0
 
