@@ -231,7 +231,7 @@ Juliette's public partials have moved to a reserved location to avoid collision 
 | Before | After |
 | ---- | ---- |
 | `/layouts/partials/transformers/my-transformer.tpl` | `/layouts/partials/juliette/transformers/my-transformer.html` |
-| `{{ partial "transformers/my-transformer.tpl }}` | `{{ partial "juliette/transformers" }}` |
+| `{{ partial "transformers/my-transformer.tpl }}` | `{{ partial "juliette/transformers/my-transformer" }}` |
 
 Page's Scratch is dropped in favor of `return` partials to manipulate data. As local Scratch is still heavily used. This should not create too much changes in your code. Go another read to the new [Advanced Customization section](#advanced-customization)
 
