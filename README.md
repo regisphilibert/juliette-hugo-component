@@ -16,10 +16,14 @@ If you need to customize your output but do no want to get involved in coding __
 
 ## What are the supported Output Formats?
 
-Out of the box, Juliette can produce JSON and XML.
+Out of the box, Juliette can produce JSON and aXML V1, though use the later wisely, see [#6](https://github.com/regisphilibert/juliette-hugo-component/issues/6).
 
 But this is not a limit. Juliette focuses on helping you buid a consistent data object for each page. 
-Adding your own output format is therefor limited to creating a few new templates files pulling from this consistent data model.
+Adding your own output format is therefor limited to creating a few new templates files pulling from this consistent data model with a [one liner](https://github.com/regisphilibert/juliette-hugo-component/blob/master/layouts/_default/list.json.json#L1):
+
+```
+{{ $data := partial "juliette/prepareList" . }}
+```
 
 ## Getting Started
 
